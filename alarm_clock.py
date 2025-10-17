@@ -15,3 +15,23 @@ def parse_time_str(hhmm: str) -> datetime:
     if target <= now:
         target += timedelta(days=1)
     return target
+
+try:
+    target = parse_time_str(hhmm)
+except ValueError as e:
+    print("[Erreur]", e)
+    raise SystemExit(1)
+
+print("Alarme programmée pour :", target.strftime("%Y-%m-%d %H:%M"))
+
+while True:
+    now = datetime.now()
+    if now >= target:
+        print("\n ALARME !")
+        break
+    remaining = int((target - now).total_seconds())
+    if remaining % 15 ==0:
+        m, s = divmod(remaining, 60)
+        h, m = divmod(m, 60)
+        print(f"Temps restant: {h:02d}:{m:02d}:{s:02d}", end="\r", flush=True)
+    time.sleep(0.5)    
