@@ -1,12 +1,14 @@
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 import time
+
 
 print("ALARM CLOCK -Etape 1(sans son)")
 
 hhmm = input("Entrez l'heure (HH:MM) ex: 07:30 > ").strip()
 
 def parse_time_str(hhmm: str) -> datetime:
-    now = datetime.now()
+    now = datetime.now(ZoneInfo("Europe/Paris"))
     try:
         hour, minute =map(int, hhmm.split(":"))
     except Exception:
@@ -25,12 +27,12 @@ except ValueError as e:
 print("Alarme programmée pour :", target.strftime("%Y-%m-%d %H:%M"))
 
 while True:
-    now = datetime.now()
+    now = datetime.now(ZoneInfo("Europe/Paris"))
     if now >= target:
         print("\n ALARME !")
         break
     remaining = int((target - now).total_seconds())
-    if remaining % 15 ==0:
+    if remaining % 1 ==0:
         m, s = divmod(remaining, 60)
         h, m = divmod(m, 60)
         print(f"Temps restant: {h:02d}:{m:02d}:{s:02d}", end="\r", flush=True)
